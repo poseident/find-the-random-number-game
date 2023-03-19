@@ -21,10 +21,12 @@ void play(std::string minimum, std::string maximum, std::string find_number, std
 
 int main(int argc, char **argv)
 {
+    srand( time( NULL ) );
     std::string minimum;
     std::string maximum;
     std::string find_number;
     std::string attempts;
+    std::string choice;
     std::string menu = "1";
     std::cout << "Welcome in the prog that play the guess number game" << std::endl;
     while (menu == "1")
@@ -35,9 +37,16 @@ int main(int argc, char **argv)
         {
             std::cout << "minimum : "; std::cin >> minimum; std::cout << "\n";
             std::cout << "maximum : "; std::cin >> maximum; std::cout << "\n";
-            std::cout << "number to find : "; std::cin >> find_number; std::cout << "\n";
             std::cout << "attempts : "; std::cin >> attempts; std::cout << "\n";
-            play(minimum, maximum, find_number, attempts);
+            std::cout << "do you want to choose a number or randomize ? ([y]/[n]) :" << std::endl;
+            std::cin >> choice;
+            if (choice == "y")
+            {
+                std::cout << "number to find : "; std::cin >> find_number; std::cout << "\n";
+                play(minimum, maximum, find_number, attempts);
+            }
+            else
+                play(minimum, maximum, "c", attempts);
         }
         else
             break;
@@ -50,12 +59,21 @@ void play(std::string minimum, std::string maximum, std::string find_number, std
 {
     int minimum_i = std::stoi(minimum);
     int maximum_i = std::stoi(maximum);
-    int find_number_i = std::stoi(find_number);
+    int find_number_i;
     int attempts_i = std::stoi(attempts);
     int mini = minimum_i;
     int maxi = maximum_i;
     int try_n = 0;
     int median = 0;
+    if (find_number == "c")
+        find_number_i = rand() % ( maximum_i - minimum_i ) + minimum_i;
+    else
+        find_number_i = std::stoi(find_number);
+    if (find_number_i < minimum_i || find_number_i > maximum_i)
+    {
+        std::cout << "the number to guess is not in the range !" << std::endl; 
+        return ;
+    }
     median = (maxi - mini) / 2;
     while (attempts_i > 0)
     {
